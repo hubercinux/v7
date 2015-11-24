@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data> 
+      <record id="stock_move_rmp_production_precision" model="decimal.precision">
+            <field name="name">CantidadStockMove</field>
+            <field name="digits">6</field>
+      </record>
+    </data>
+</openerp>

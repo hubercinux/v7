@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<openerp>
+<data>
+        <record model="ir.module.category" id="module_sale_cotizacion_management">
+                <field name="name">Permisos cotizacion</field>
+                <field name="description">Administra grupos de cotizacion</field>
+                <field name="sequence">3</field>
+        </record>
+
+         <record model="res.groups" id="group_sale_cotizacion_user">
+                <field name="name">Usuario</field>
+                <field name="category_id" ref="module_sale_cotizacion_management"/>
+         </record>
+
+         <record model="res.groups" id="group_sale_cotizacion_manager">
+                <field name="name">Gestor</field>
+                <field name="category_id" ref="module_sale_cotizacion_management"/>
+         </record>
+
+         <record model="res.groups" id="group_price_original">
+                <field name="name">Precio Original</field>
+                <field name="category_id" ref="module_sale_cotizacion_management"/>
+         </record>
+
+        <record id="ir_rule_sale_cotizacion" model="ir.rule">
+            <field name="model_id" ref="sale_cotizacion.model_sale_cotizacion"/>
+            <field name="domain_force">['|',('shop_id','=',False),('shop_id','in',[x.id for x in user.shop_ids])]</field>
+            <field name="name">COTIZACIONES X TIENDAS</field>
+            <field eval="1" name="global"/>
+            <field eval="0" name="perm_unlink"/>
+            <field eval="0" name="perm_write"/>
+            <field eval="1" name="perm_read"/>
+            <field eval="0" name="perm_create"/>
+        </record>
+
+</data>
+
+</openerp>

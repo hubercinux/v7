@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>	
+    <data>
+        <record id="update_date_purchase_form_inherit" model="ir.ui.view">
+            <field name="name">update.purchase.date.view.form</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <field name="date_order" position="replace">
+                  <label for="date_order"/>
+                  <div>                  
+                    <field name="date_order" class="oe_inline"/>
+                    <button name="%(purchase_update_date.action_view_update_date_purchase)d" string="Actualizar fecha" type="action" class="oe_link" />
+                  </div>
+                </field>
+            </field>
+        </record>
+    </data>
+</openerp>

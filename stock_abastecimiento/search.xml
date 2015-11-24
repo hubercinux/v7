@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+
+        <!-- Stock max y min line  view search -->
+        <record model="ir.ui.view" id="view_stock_max_min_line_search">
+            <field name="name">stock.max.min.line.search</field>
+            <field name="model">stock.max.min.line</field>
+            <field name="arch" type="xml">
+                <search string="Search Invoice">
+                  <field name="name" filter_domain="[('name','ilike',self)]"/>
+                    <field name="max_min_id"/>
+                    <group expand="0" string="Agrupar por">
+                        <filter string="Grupo de abastecimiento" domain="[]" context="{'group_by':'max_min_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Stock abstecimiento  view search -->
+        <record model="ir.ui.view" id="view_stock_abastecimiento_filter">
+            <field name="name">stock.abastecimiento.filter</field>
+            <field name="model">stock.abastecimiento</field>
+            <field name="arch" type="xml">
+                <search string="Search abastecimiento">
+                    <field name="name" filter_domain="['|',('name','ilike',self),('origin','ilike',self)]"/>
+                    <field name='cliente_id'/>
+                    <separator/>
+                    <separator string="Por estados"/>
+                    <filter string="Nuevo" domain="[('state','=','draft')]" help='Nuevo'/>
+                    <filter string="consolidado" domain="[('state','=','consol')]" help="consolidado"/>
+                    <filter string="Pendiente" domain="[('state','=','progress')]" help="Pendiente"/>
+                    <separator string="No consolidados"/>
+                    <filter string="No consolidados" domain="[('consolidar','=',False)]" help="Pedidos que tienen fecha de entrega"/>
+                    <separator string="Por Almacen"/>
+                    <filter string="Taller" domain="[('warehouse_id','=',7)]" help="Pedidos para Taller"/>
+                    <filter string="Produccion" domain="[('warehouse_id','=',6)]" help="Pedidos para Produccion"/>
+                    <group expand="0" string="Agrupar por">
+                        <filter string="Almacen" domain="[]" context="{'group_by':'warehouse_id'}"/>
+                        <filter string="Estado" domain="[]" context="{'group_by':'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>                  
+
+    </data>
+</openerp>

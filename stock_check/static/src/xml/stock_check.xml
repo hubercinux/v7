@@ -1,0 +1,35 @@
+<templates>
+<div t-name="stock_check.teme" class="oe_stock_check">
+	<div class="top1">
+	    <div class="title_picking" >GUIA: </div>
+	    <div class="title_picking_number"></div>
+	</div>
+    <div class="top2">
+    	<div class="form-control">
+    		<input class="oe_searchbox" placeholder="Buscar producto por codigo de barra aqui..." type="text" />
+    	</div>
+    	<div class="btn-primary">
+    		<button type="button">Confirmar</button>
+		</div>
+	</div>
+
+	
+
+    <div>
+	    <table class="table">
+	    	<thead>
+	    		<tr>
+	    			<th>Codigo de Barra</th>
+	    			<th>Producto</th>
+	    			<th>Cantidad</th>
+	    			<th>Scaneado</th>
+	    			<th>Estado</th>
+	    		</tr>
+	    	</thead>
+	    	<tbody>    			    		
+	    	</tbody>
+	    </table>
+	</div>
+
+</div>
+</templates>

@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+
+        <record id="res_partner_ruc_sunat_form_inherit" model="ir.ui.view">
+            <field name="name">res.partner.ruc.sunat.view.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                
+                <field name="is_company" position="replace">
+                    <field name="is_company" on_change="onchange_type(is_company,doc_type)" class="oe_inline"/>
+                </field>
+
+               	<field name="parent_id" position="before">
+                    <group col="12">
+    			        <field name="doc_type" nolabel="1" colspan="9" on_change="onchange_doc_type(doc_type,doc_number,is_company,is_company)"/>
+                        <field name="doc_number" placeholder="Numero Doc." string="RUC/DNI" nolabel="1" colspan="3" on_change="onchange_doc_number(doc_type,doc_number,is_company,is_company)" style="width: 150%%" />
+                    </group>
+                    <!--
+                    <group col="12">
+                        <div class="oe_edit_only">
+                            <img src='https://cel.reniec.gob.pe/valreg/codigo.do' width="120px" height="25px"  attrs="{'invisible': [('is_company','=', True)]}" colspan="9"/>
+                            <label string="" colspan="2"/>
+
+                            <field name="codigo_reg_sunat_reniec" placeholder="Ingrese Cod. Mayusc." class="oe_inline" nolabel="1" attrs="{'invisible': [('is_company','=', True)]}" on_change="onchange_cod(doc_type,doc_number,codigo_reg_sunat_reniec,is_company)"/>                        
+                        </div> 
+                    </group> -->
+                    <group col="12">   
+                        <field name="apellidopaterno" attrs="{'invisible': [('is_company','=', True)]}" nolabel="1" colspan="4" placeholder="Apell. Parterno" on_change="onchange_person(name,nombres,apellidopaterno,apellidomaterno)"/>                                        
+                        <field name="apellidomaterno" attrs="{'invisible': [('is_company','=', True)]}" nolabel="1" colspan="4" placeholder="Apell. Materno" on_change="onchange_person(name,nombres,apellidopaterno,apellidomaterno)"/>                        
+                        <field name="nombres" attrs="{'invisible': [('is_company','=', True)]}" nolabel="1" colspan="4" placeholder="Nombres" on_change="onchange_person(name,nombres,apellidopaterno,apellidomaterno)"/>
+                    </group>
+		        </field>
+                    <field name="category_id" position="after">
+		    <field name="venta_campo" class="oe_inline"  placeholder="VENTA CAMPO"/>
+                    <field name="llego_kiddys" class="oe_inline"  placeholder="¿FORMA DE CONTACTO CON KIDDYS?" help="FORMA DE CONTACTO CON KIDDYS"/>
+                    <field name="otro_llego_kiddys"  placeholder="¿De que forma?"  attrs="{'invisible': [('llego_kiddys','!=','7')]}"  />
+                </field>
+
+                <!--
+                <xpath expr="//page[@string='Internal Notes']" position="before">
+                    <page string="Direcciones">
+                        <separator string="Direcciones"/>
+                        <field name="address"/>
+                   </page>
+                </xpath>
+                 -->
+            <!--
+                <xpath expr="/form/sheet/notebook/page[@string='Contacts']/form/sheet/field[@name='address']/form/group/field[@name='city']" position="replace">
+                    <field name="address_ref"/>
+                </xpath> 
+            -->
+                <xpath expr="//page[@string='Contacts']//label[@for='name']" position="before">
+                    <field name="is_company" on_change="onchange_type(is_company,doc_type)"  invisible="1" class="oe_inline"/>
+                </xpath>
+            <!--
+                <xpath expr="/form/notebook/page[@string='Contacts']/form/div/field[@name='category_id']" position="after">
+            -->
+                <xpath expr="//page[@string='Contacts']//field[@name='category_id']" position="after">
+                     <group col="12">
+                        <field name="doc_type" nolabel="1" colspan="9" on_change="onchange_doc_type(doc_type,doc_number,is_company,is_company)"/>
+                        <field name="doc_number" placeholder="Numero Doc." string="RUC/DNI" nolabel="1" colspan="3" on_change="onchange_doc_number(doc_type,doc_number,is_company,is_company)" style="width: 150%%"/>
+                    </group>
+                </xpath>
+
+
+            </field>
+        </record>
+
+
+        <record id="res_partner_ruc_sunat_informacion_form_inherit" model="ir.ui.view">
+            <field name="name">res.partner.ruc.sunat.informacion.view.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="account.view_partner_property_form"/>
+            <field name="arch" type="xml">
+                <field name="bank_ids" position="before">
+                    <separator string="Informacion de SUNAT"/>
+                    <group>
+                        <field name="sunat_state" style="width: 30%%"/>
+                        <field name="sunat_condicion" style="width: 50%%"/>
+                        <field name="sunat_agente_retencion"/>
+                        <field name="sunat_retencion_describe" attrs="{'invisible': [('sunat_agente_retencion','=', False)]}"/>
+                    </group>
+                </field>
+            </field>
+        </record>
+
+
+        <record model="ir.ui.view" id="links_form_view"> 
+            <field name="name">res.partner.cookie.reniec</field>
+            <field name="model">res.partner.cookie.reniec</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Enlaces"  version="7.0">
+                    <sheet>
+                        <group col="12">
+                            <field name="name" colspan="2"/>
+                            <field name="cookie_reniec" colspan="10"/>
+                        </group>
+                        <group col="12">
+                            <field name="urls"/>
+                            <button name="open_url" type="object" string="Abrir" icon="gtk-zoom-in" />
+                        </group>
+                   </sheet>
+                </form>
+             </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_open_links_form">
+            <field name="name">Lista de enlaces</field>
+            <field name="res_model">res.partner.cookie.reniec</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem name="Reniec" id="menu_descripcion" action="action_open_links_form" parent="base.menu_product" sequence="2"/>
+      
+    
+        <record model="ir.ui.view" id="res_partner_view_ruc_dni" >
+            <field name="name">res.partner.view.ruc.dni</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_tree" />
+            <field name="arch" type="xml">
+                <field name="phone" position="before">
+                     <field name="doc_number" string="RUC/DNI"/>
+                </field>
+                <field name="email" position="replace">
+                    <field name="state_id"/>
+                </field>
+            </field>
+        </record>
+
+        <!-- Permite mostrar la direccion completa de factura y envio en el pedido de compra -->
+        <record model="ir.ui.view" id="view_sale_order_address_complet_form" >
+            <field name="name">sales.order.address.complet</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <field name="partner_invoice_id" position="replace">
+                    <field name="partner_invoice_id" groups="sale.group_delivery_invoice_address" context="{'default_type':'invoice','show_address': 1}" options="{&quot;always_reload&quot;: True}"/>
+                </field>
+                <field name="partner_shipping_id" position="replace">
+                    <field name="partner_shipping_id" groups="sale.group_delivery_invoice_address" context="{'default_type':'delivery' ,'show_address': 1}" options="{&quot;always_reload&quot;: True}"/>
+                </field>
+
+            </field>
+        </record>
+
+
+    </data>
+</openerp>

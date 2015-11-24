@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+        <!-- INSERTANDO CAUSAS -->
+        <record model="res.partner.cookie.reniec" id="1">
+            <field name="name">FFV9</field>
+            <field name="cookie_reniec">97657851ce582b3e9e65760488283b98b2a382f575d.mALvn6iL-B9zpAzzmMTBpQ8Iq6iUaNaKahD3lN4PagSLa34Iah8K-xuL-AeSa69zaMSLa6aPa64Obh0QawSHc30Ka2bEaAjzawTwp65ynh4IqAjIokjx-ArJmwTKngaLc3iPaN8Sax8xf2bQmkLMnkqxn6jAmljGr5XDqQLvpAe_</field>
+            <!--<field name="urls">https://cel.reniec.gob.pe/valreg/codigo.do</field> -->
+            <field name="urls">https://cel.reniec.gob.pe/valreg/valreg.do?accion=ini</field>
+        </record>
+          
+    </data>
+</openerp>

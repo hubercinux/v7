@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="view_purchase_update_date_form" model="ir.ui.view">
+            <field name="name">Purchase Update Date</field>
+            <field name="model">purchase.update.date</field>
+            <field name="arch" type="xml">
+                <form string="Update Date Purchase" version="7.0">
+                    <group>
+                        <field name="fecha_update"/>
+                    </group>
+                    <footer>
+                        <button name="update_date" string="Update" type="object" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_view_update_date_purchase" model="ir.actions.act_window">
+            <field name="name">Update Date Purchase</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">purchase.update.date</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_purchase_update_date_form"/>
+            <field name="target">new</field>
+        </record>
+
+    </data>
+</openerp>

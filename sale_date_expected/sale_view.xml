@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+
+        <record id="view_sale_orderfor_planificado" model="ir.ui.view">
+            <field name="name">sale.order.form.planificado.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <field name="project_id" position="replace">
+                    <label for="fecha_expected"/>
+                    <div>
+                        <field name="fecha_expected" class="oe_inline"/>
+                        <button name="%(sale_date_expected.action_view_update_sale)d" string="Actualizar fecha" type="action" class="oe_link" />
+                    </div>
+                </field>
+                <field name="pricelist_id" position="after">
+                    <field name="canal_venta"/>
+                </field>
+            </field>
+        </record>
+    </data>
+    <data noupdate="1">
+        <!--Email template -->
+        <record id="email_template_sale_fecha_entrega" model="email.template">
+            <field name="name">Sale Update fecha entrega</field>
+            <field name="email_from">${object.user_id.email}</field>
+            <field name="email_to">almacen@kiddyshouse.com,asistente.almacen@kiddyshouse.com,produccion@kiddyshouse.com,asistente.produccion@kiddyshouse.com,operaciones@kiddyshouse.com</field>
+            <field name="reply_to">${object.user_id.email}</field>
+            <field name="subject">ACTUALIZACION DE FECHA DE ENTREGA DE ${object.name or 'n/a' }</field>
+            <field name="model_id" ref="sale.model_sale_order"/>
+            <field name="auto_delete" eval="False"/>
+            <field name="lang">${object.partner_id.lang}</field>
+            <field name="body_html"><![CDATA[<div style="font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; "> <p>ESTIMADO USUARIO: </p>
+                <p>EL PEDIDO DE VENTA N° <b> ${object.name or 'n/a' } </b> DEL CLIENTE <b> ${object.partner_id.name or 'n/a' } </b> HA SIDO ACTUALIZADO: </p>
+                <p>FECHA ANTIGUA DE ENTREGA:<b> {0} </b></p>
+                <p>NUEVA FECHA DE ENTREGA:<b> {1} </b> </p> 
+                <p>ESTA ACTUALIZACION HA SIDO HECHO POR <b> ${user.name or 'n/a' }</b> </p> 
+            </div>
+            ]]></field>
+        </record>
+    </data>
+</openerp>

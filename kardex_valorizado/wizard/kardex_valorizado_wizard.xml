@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    	 <!-- id nombre wozard no  debe de termina en _form-->
+        <record id="view_kardex_valorizado" model="ir.ui.view">
+            <field name="name">Kardex valorizado de producto</field>
+            <field name="model">kardex.valorizado.wizard</field>
+	        <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Imprime kardex producto valorizado" version="7.0">
+                    <group col="12" string="Seleccione un producto">
+                        <field name="product_ids" domain="['|',('type', '=', 'product'),('type', '=', 'consu')]"  required="True" colspan="12"  options="{'no_open':True,'limit': 10, 'create': false, 'create_edit': false}"/>
+    			         <newline/> 
+                        <field name="fecha_desde" required='True'/>
+                        <field name="fecha_hasta" required='True'/>
+                    </group>
+                    <newline/>
+                    <footer>
+    	                <button name="print_report" type="object" string="Imprimir en PDF" class="oe_highlight"/> 
+                        or
+                        <button name="print_report_cal" type="object" string="Imprimir hoja calculo"/>  
+                        or          
+                    	<button string="Cancel" special="cancel" class="oe_link"/>
+                    </footer>
+               </form>
+            </field>
+        </record>
+
+        <record id="action_view_kardex_valorizado" model="ir.actions.act_window">
+            <field name="name">Kardex valorizado de producto</field>
+            <field name="type">ir.actions.act_window</field> 
+            <field name="res_model">kardex.valorizado.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_kardex_valorizado"/>
+            <field name="target">new</field>
+        </record>
+<!--
+        <menuitem
+                icon="STOCK_PRINT"
+                name="Kadex producto valorizado "
+                parent="stock.menu_stock_product" 
+                action="action_view_kardex_valorizado"
+                id="menu_action_kardex_valorizado_wizard"
+        />
+-->
+        <menuitem id="menu_finance_kardex" name="Productos" parent="account.menu_finance" sequence="3"/>
+        <menuitem
+                name="Productos"
+                parent="menu_finance_kardex"
+                action="product.product_normal_action"
+                id="menu_finance_producto_view"
+                sequence='1'
+        />
+        <menuitem
+                name="Kadex producto almacen"
+                parent="menu_finance_kardex"
+                action="product_kardex.action_view_kardex_producto"
+                id="menu_finance_kardex_producto_alm"
+        />
+
+        <menuitem
+                name="Kadex producto valorizado"
+                parent="menu_finance_kardex"
+                action="action_view_kardex_valorizado"
+                id="menu_finance_kardex_producto_valoriz"
+        />
+
+    </data>
+</openerp>

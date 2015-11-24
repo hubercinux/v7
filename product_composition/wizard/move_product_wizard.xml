@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+    	 <!-- id nombre wozard no  debe de termina en _form-->
+        <record id="view_producto_composition_wizard" model="ir.ui.view">
+            <field name="name">Composicion de Producto</field>
+            <field name="model">product.composition.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Composicion de Producto" version="7.0">
+                    <group string="Composicion de producto">
+                    	<group>
+                          <field name="product_id"/>
+                          
+                        </group>
+                        <group>
+                          <field name="quantity"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page  string="Componentes">
+                            <field name="composition_line_ids">
+                                <tree string="Components">
+                                    <field name="product_id"/>
+                                    <field name="quantity"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>                    
+                    <footer>
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+               </form>
+            </field>
+        </record>
+
+        <record id="action_producto_composition_move" model="ir.actions.act_window">
+            <field name="name">Composicion de producto</field>
+            <field name="type">ir.actions.act_window</field> 
+            <field name="res_model">product.composition.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_producto_composition_wizard"/>
+            <field name="target">new</field> 
+        </record>
+
+    </data>
+</openerp>
+
+

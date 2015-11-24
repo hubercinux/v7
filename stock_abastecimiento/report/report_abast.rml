@@ -1,0 +1,198 @@
+<?xml version="1.0"?>
+<document filename="test.pdf">
+  <template pageSize="(595.0,842.0)" title="Test" author="Martin Simon" allowSplitting="20">
+    <pageTemplate id="first">
+      <frame id="first" x1="37.0" y1="42.0" width="521" height="758"/>
+    </pageTemplate>
+  </template>
+  <stylesheet>
+    <blockTableStyle id="Standard_Outline">
+      <blockAlignment value="LEFT"/>
+      <blockValign value="TOP"/>
+    </blockTableStyle>
+    <blockTableStyle id="Tabla1">
+      <blockAlignment value="LEFT"/>
+      <blockValign value="TOP"/>
+    </blockTableStyle>
+    <blockTableStyle id="Tabla3">
+      <blockAlignment value="LEFT"/>
+      <blockValign value="TOP"/>
+    </blockTableStyle>
+    <blockTableStyle id="Tabla5">
+      <blockAlignment value="LEFT"/>
+      <blockValign value="TOP"/>
+      <lineStyle kind="LINEBELOW" colorName="#000000" start="0,-1" stop="0,-1"/>
+      <lineStyle kind="LINEBELOW" colorName="#000000" start="1,-1" stop="1,-1"/>
+      <lineStyle kind="LINEBELOW" colorName="#000000" start="2,-1" stop="2,-1"/>
+      <lineStyle kind="LINEBELOW" colorName="#000000" start="3,-1" stop="3,-1"/>
+    </blockTableStyle>
+    <blockTableStyle id="Tabla6">
+      <blockAlignment value="LEFT"/>
+      <blockValign value="TOP"/>
+      <lineStyle kind="LINEBELOW" colorName="#e6e6e6" start="0,-1" stop="0,-1"/>
+      <lineStyle kind="LINEBELOW" colorName="#e6e6e6" start="1,-1" stop="1,-1"/>
+      <lineStyle kind="LINEBELOW" colorName="#e6e6e6" start="2,-1" stop="2,-1"/>
+      <lineStyle kind="LINEBELOW" colorName="#e6e6e6" start="3,-1" stop="3,-1"/>
+    </blockTableStyle>
+    <blockTableStyle id="Tabla11">
+      <blockAlignment value="LEFT"/>
+      <blockValign value="TOP"/>
+      <lineStyle kind="LINEABOVE" colorName="#000000" start="1,0" stop="1,0"/>
+      <lineStyle kind="LINEABOVE" colorName="#000000" start="2,0" stop="2,0"/>
+    </blockTableStyle>
+    <initialize>
+      <paraStyle name="all" alignment="justify"/>
+    </initialize>
+    <paraStyle name="P1" fontName="Helvetica" fontSize="8.0" leading="10"/>
+    <paraStyle name="P2" fontName="Helvetica" fontSize="7.0" leading="10"/>
+    <paraStyle name="P3" fontName="Helvetica" fontSize="8.0" leading="10" alignment="LEFT"/>
+    <paraStyle name="P4" fontName="Helvetica" fontSize="8.0" leading="10"/>
+    <paraStyle name="P5" fontName="Helvetica" fontSize="8.0" leading="10" textColor="#4c4c4c"/>
+    <paraStyle name="P6" fontName="Helvetica-Bold" fontSize="7.0" leading="10"/>
+    <paraStyle name="P7" fontName="Helvetica" fontSize="8.0" leading="10" alignment="RIGHT"/>
+    <paraStyle name="P8" fontName="Helvetica" fontSize="8.0" leading="10"/>
+    <paraStyle name="P9" fontName="Helvetica-Bold" fontSize="7.0" leading="10" alignment="RIGHT"/>
+    <paraStyle name="P10" fontName="Helvetica" fontSize="8.0" leading="10" alignment="RIGHT"/>
+    <paraStyle name="Standard" fontName="Helvetica"/>
+    <paraStyle name="Heading" fontName="Helvetica" fontSize="14.0" leading="17" spaceBefore="12.0" spaceAfter="6.0"/>
+    <paraStyle name="Text body" fontName="Helvetica" spaceBefore="0.0" spaceAfter="7.0"/>
+    <paraStyle name="List" fontName="Helvetica" spaceBefore="0.0" spaceAfter="7.0"/>
+    <paraStyle name="Caption" fontName="Helvetica" fontSize="12.0" leading="15" spaceBefore="6.0" spaceAfter="6.0"/>
+    <paraStyle name="Index" fontName="Helvetica"/>
+    <paraStyle name="Table Contents" fontName="Helvetica"/>
+    <paraStyle name="Table Heading" fontName="Helvetica" alignment="CENTER"/>
+    <images/>
+  </stylesheet>
+  <story>
+    <para style="terp_default_8">[[ repeatIn(objects,'o') ]] </para>
+    <blockTable colWidths="125.0,170.0,54.0,122.0" style="Tabla1">
+      <tr>
+        <td>
+          <para style="P6">ALMACEN:</para>
+        </td>
+        <td>
+          <para style="P2">[[ o.warehouse_id.name or '']]</para>
+        </td>
+        <td>
+          <para style="P6">NUMERO:</para>
+        </td>
+        <td>
+          <para style="P2">[[ o.name or '']]</para>
+        </td>
+      </tr>
+    </blockTable>
+    <blockTable colWidths="125.0,170.0,54.0,122.0" style="Tabla3">
+      <tr>
+        <td>
+          <para style="P6">FECHA ABASTECIMIENTO: </para>
+        </td>
+        <td>
+          <para style="P2"> [[ o.fecha_abast or '']] </para>
+        </td>
+        <td>
+          <para style="P6">ORIGEN:</para>
+        </td>
+        <td>
+          <para style="P2">[[ o.origin or '']]</para>
+        </td>
+      </tr>
+    </blockTable>
+    <blockTable colWidths="145.0,165.0,80.0,80.0" style="Tabla5">
+      <tr>
+        <td>
+          <para style="P9">DESCRIPCION</para>
+        </td>
+        <td>
+          <para style="P9">COMPUESTO</para>
+        </td>
+        <td>
+          <para style="P9">CANT. SOLICIT.</para>
+        </td>
+        <td>
+          <para style="P9">CANT. ABASTEC.</para>
+        </td>
+      </tr>
+    </blockTable>
+    <section>
+    <para style="P1">[[ repeatIn(o.abastec_line_ids, 'lines') ]]</para>
+    <blockTable colWidths="145.0,165.0,80.0,80.0 " style="Tabla6">
+      <tr>
+        <td>
+          <para style="P4">[[ lines.product_id.name ]]</para>
+        </td>
+        <td>
+          <para style="P4">[[ get_composition(lines.product_id.id,lines.product_qty) ]]</para>
+        </td>
+        <td>
+          <para style="P10">[[ lines.product_qty or '0.0']]</para>
+        </td>
+        <td>
+          <para style="P10">[[ lines.product_qty_abast or '0.0' ]]</para>
+        </td>
+      </tr>
+    </blockTable>
+    </section>
+    <blockTable colWidths="250.0,156.0,65.0" style="Tabla11">
+      <tr>
+        <td>
+          <para style="P2">
+            <font color="white">- </font>
+          </para>
+        </td>
+        <td>
+          <para style="P9">TOTAL ITEMS:</para>
+        </td>
+        <td>
+          <para style="P7">[[ formatLang(o.total_items) ]]</para>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <para style="P2">
+            <font color="white">- </font>
+          </para>
+        </td>
+        <td>
+          <para style="P9">TOTAL PRODUCTOS SOLICITADOS:</para>
+        </td>
+        <td>
+          <para style="P7">[[ formatLang(o.total_quantity) ]]</para>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <para style="P2">
+            <font color="white">- </font>
+          </para>
+        </td>
+        <td>
+          <para style="P9">TOTAL PRODUCTOS ABASTECIDOS:</para>
+        </td>
+        <td>
+          <para style="P7">[[ formatLang(o.total_quantity_abast) ]]</para>
+        </td>
+      </tr>
+    </blockTable>
+          <para style="P2">
+            <font color="white">- </font>
+          </para>
+    <blockTable colWidths="50.0,355.0,54.0,22.0" style="Tabla3">
+      <tr>
+        <td>
+          <para style="P6">NOTA: </para>
+        </td>
+        <td>
+          <para style="P2"> [[ o.note or '']] </para>
+        </td>
+        <td>
+          <para style="P6"></para>
+        </td>
+        <td>
+          <para style="P2"></para>
+        </td>
+      </tr>
+    </blockTable>
+  </story>
+</document>
+
+

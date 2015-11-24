@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<openerp>
+	<data>
+    	<!-- para impresiones cotizacion corporativo -->
+        <report
+                auto="False"
+                id="sale_cotizacion_print"
+                model="sale.cotizacion"
+                name="sale.cotizacion.print"
+                rml="sale_cotizacion/report/report_print.rml" 
+                string="Cotizacion con dscto por Producto"
+                multi="False"/>
+
+                <!-- para impresiones cotizacion corporativo -->
+        <report
+                auto="False"
+                id="sale_cotizacion_print_sin_dscto_product"
+                model="sale.cotizacion"
+                name="sale.cotizacion.print.sin.dscto.product"
+                rml="sale_cotizacion/report/report_print_sin_dscto_producto.rml" 
+                string="Cotizacion sin dscto por Producto"
+                multi="False"/>
+
+        <report
+                auto="False"
+                id="sale_cotizacion_print_con_dscto_global"
+                model="sale.cotizacion"
+                name="sale.cotizacion.print.con.dscto.global"
+                rml="sale_cotizacion/report/report_print_con_dscto_global.rml" 
+                string="Cotizacion con dscto global"
+                multi="False"/>
+
+        <report
+                auto="False"
+                id="sale_orden_venta_update_sin"
+                model="sale.order"
+                name="sale.orden.venta.update.sin"
+                rml="sale_cotizacion/report/orden_venta_sin.rml" 
+                string="Orden venta sin caracteristicas"
+                multi="False"/>                
+
+        <report
+                auto="False"
+                id="sale_orden_venta_update"
+                model="sale.order"
+                name="sale.orden.venta.update"
+                rml="sale_cotizacion/report/orden_venta.rml" 
+                string="Orden venta con caracteristicas"
+                multi="False"/>
+
+            
+
+	</data>
+</openerp>

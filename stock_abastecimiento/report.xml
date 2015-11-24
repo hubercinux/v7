@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+
+        <report
+              auto="False"
+              id="stock_abstecimiento_print"
+              model="stock.abastecimiento"
+              name="stock.abastecimiento.print"
+              rml="stock_abastecimiento/report/report_abast.rml" 
+              string="Imprimir abastecimiento"
+              multi="False"/>
+
+    </data>
+</openerp>

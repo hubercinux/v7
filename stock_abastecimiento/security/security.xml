@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<openerp>
+   <data noupdate="1">
+
+        <record model="ir.module.category" id="module_stock_abastecimiento_management">
+                <field name="name">Permisos Abatecimiento</field>
+                <field name="description">Administra grupos Abastecimiento</field>
+                <field name="sequence">5</field>
+        </record>    
+
+        <!-- Solo cierto  grupos pueden crear reglas de stock de max y min de productos -->
+        <record id="group_abastec_stock_max_min" model="res.groups">
+            <field name="name">GENERAR STOCK MAX MIN</field>
+            <field name="category_id" ref="module_stock_abastecimiento_management"/>
+            <field name="users" eval="[(4, ref('base.user_root'))]"/>
+        </record>  
+
+        <!-- Solo cierto  grupos pueden Generar nuevas solicitudes de abasteciientos de productos --> 	
+        <record id="group_abastec_stock_nuevo" model="res.groups">
+            <field name="name">GENERAR ABASTECIMIENTO</field> 
+            <field name="category_id" ref="module_stock_abastecimiento_management"/>
+            <field name="users" eval="[(4, ref('base.user_root'))]"/>
+        </record>
+
+        <!-- Solo cierto  grupos pueden generar las guias desde el almacen PRINCIPAL hacia las TIENDAS -->
+        <record id="group_abastec_stock" model="res.groups">
+            <field name="name">GUIA PRINCIPAL</field> 
+            <field name="category_id" ref="module_stock_abastecimiento_management"/>
+            <field name="users" eval="[(4, ref('base.user_root'))]"/>
+        </record>
+
+
+        <!-- Solo cierto  grupos pueden presionar el boton "Calcular Abastecimiento" -->   
+        <record id="group_abastec_calcular" model="res.groups">
+            <field name="name">CALCULAR ABASTECIMIENTO</field> 
+            <field name="category_id" ref="module_stock_abastecimiento_management"/>
+            <field name="users" eval="[(4, ref('base.user_root'))]"/>
+        </record>
+
+        <!-- Grupos que pueden generar las guias desde un abasteciientos de PRODUCCION a PRINCIPAL -->
+        <record id="group_abastec_produccion" model="res.groups">
+            <field name="name">GUIA PRODUCCION</field> 
+            <field name="category_id" ref="module_stock_abastecimiento_management"/>
+            <field name="users" eval="[(4, ref('base.user_root'))]"/>
+        </record>
+
+        <!-- abastecimiento por almacen -->
+        <record id="stock_abastec_rule" model="ir.rule">
+            <field name="name">VER ABASTECIMIENTO X ALMACEN</field>
+            <field model="ir.model" name="model_id" ref="model_stock_abastecimiento"/>
+            <field name="domain_force">[('warehouse_id.lot_stock_id','in',[x.id for x in user.location_ids])]</field>
+            <field eval="1" name="perm_unlink"/>
+            <field eval="0" name="perm_write"/>
+            <field eval="1" name="perm_read"/>
+            <field eval="0" name="perm_create"/>
+            <field name="groups" eval="[(4, ref('stock_abastecimiento.group_abastec_stock_nuevo'))]"/>
+        </record>
+
+    
+   </data>
+</openerp>

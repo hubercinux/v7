@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <report
+            auto="False"
+            id="pos_order_print"
+            model="pos.order"
+            groups="pos_extend.group_pos_caja"
+            name="pos.order.print.ticket"
+            rml="pos_extend/report/pos_order_print.rml"
+            string="Imprimir ticket"
+            usage="default"
+            menu="True"
+             />
+	    <!-- imprime orden de venta -->
+            <report
+            auto="False"
+            id="pos_order_venta_print"
+            model="pos.order"
+            name="pos.order.venta.print.ticket"
+            rml="pos_extend/report/pos_order_venta_print.rml"
+            string="Imprimir orden venta"
+            usage="default"
+             />
+
+             <!-- imprime orden de venta - nuevo formato-->
+            <report
+            auto="False"
+            id="pos_orden_venta_nuevo_formato"
+            model="pos.order"            
+            string="Orden venta - Nuevo Formato"
+            name="pos.orden.venta.nuevo.formato"            
+            rml="pos_extend/report/pos_order_venta_nuevo_formato.rml"
+             />
+
+            <!-- reporte de pago por ticket factura/boleta por sesion-->
+            <report
+            auto="False"
+            id="pos_report_venta"
+            model="pos.session"
+            name="pos.session.venta.factura.print"
+            rml="pos_extend/report/pos_report_fact_venta.rml"
+            string="Reporte pagos por documento"
+            usage="default"
+             />
+             
+            <!-- arqueo de caja -->
+            <report
+            auto="False"
+            id="pos_report_pago_venta"
+            model="pos.session"
+            name="pos.session.pago.venta"
+            rml="pos_extend/report/pos_report_pago_venta.rml"
+            string="Arqueo de caja"
+            usage="default"
+             />
+
+            <!-- reporte de ticket boleta por sesion
+            <report
+            auto="False"
+            id="pos_report_boleta_venta"
+            model="pos.session"
+            name="pos.session.venta.boleta.print"
+            rml="pos_extend/report/pos_report_bolet_venta.rml"
+            string="Ticket Boleta"
+            usage="default"
+             />  
+            -->
+
+            <!-- Reporte comprobantes emitidos-->
+            <report
+            auto="False"
+            id="pos_report_venta_general"
+            model="pos.session"
+            name="pos.session.venta.general.print"
+            rml="pos_extend/report/pos_report_venta_general.rml"
+            string="Reporte comprobantes emitidos"
+            usage="default"
+             />  
+
+   </data>
+</openerp>
+

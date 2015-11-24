@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="view_sale_update_form" model="ir.ui.view">
+            <field name="name">Sale Update</field>
+            <field name="model">sale.update.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Update Sale" version="7.0">
+                    <group>
+                        <field name="fecha_update"/>
+                    </group>
+                    <footer>
+                        <button name="update_date" string="Guardar" type="object" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_view_update_sale" model="ir.actions.act_window">
+            <field name="name">Update Sale</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.update.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_sale_update_form"/>
+            <field name="target">new</field>
+        </record>
+
+    </data>
+</openerp>
+

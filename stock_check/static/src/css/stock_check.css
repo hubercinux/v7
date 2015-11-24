@@ -1,0 +1,80 @@
+
+.oe_stock_check {
+	margin-left: 3px;
+}
+.top1{
+	overflow: hidden;
+}
+.top2{
+	overflow: hidden;
+}
+.title_picking {
+	float: left;
+}
+
+.title_picking_number {
+	float: left;
+	margin-left: 10px;
+}
+
+.title_picking_number, .title_picking {
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 20px;
+	font-weight: bold;
+	margin-top: 20px;
+	margin-bottom: 0px;
+}
+.form-control {
+	margin-top: 10px;
+	margin-bottom: 10px;
+	width: 300px;
+	margin-left: 0px;
+	float: left;
+}
+.oe_searchbox {
+	width: 300px;
+
+}
+.btn-primary{
+	margin-top: 10px;
+	margin-bottom: 10px;
+	margin-left: 00px;
+	float: right;
+}
+
+.table {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 20px;
+}
+
+.table > thead > tr {
+    border-color: inherit;
+    height: 30px;    
+}
+
+.table > thead > tr > th {
+    vertical-align: middle;
+    border-bottom: 2px solid #ddd;
+    text-align: center;
+}
+
+.table > tbody > tr {
+    border-color: inherit;
+    height: 30px;
+    background-color: turquoise;
+}
+
+.table > tbody > tr > td {
+    vertical-align: middle;
+    border-bottom: 2px solid #ddd;
+    padding-left: 15px;
+    /*text-align: center;*/
+}
+.table tbody > tr > td.text_center {
+	text-align: center;
+}
+
+.table input {
+    width: 50px;
+}

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <report
+            id="kardex_valorizado_report"
+            string="Kardex Valorizado"
+            model="stock.move"
+            name="kardex.valorizado"
+            auto="False"
+            multi="True"
+            menu="False"
+            rml="kardex_valorizado/report/kardex_valorizado_report.rml"
+             />
+    </data>
+</openerp>

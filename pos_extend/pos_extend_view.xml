@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data> 
+        <!-- Añade el campos al pedido de venta del TPV-->
+		<record model="ir.ui.view" id="view_pos_extend_form_inherited">
+	        <field name="name">pos.order.extend.form.inherited</field>
+	        <field name="model">pos.order</field>
+	        <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
+	        <field name="arch" type="xml">
+
+                <xpath expr="//button[@name='%(point_of_sale.action_pos_payment)d']" position="replace"/>
+                <xpath expr="//button[@name='action_invoice']" position="replace"/>
+
+                <xpath expr="//button[@name='%(point_of_sale.action_report_pos_receipt)d']" position="replace">
+                    <button name="pos_print_report" string="imprimir Ticket" type="object" states="paid,done,invoiced" groups="pos_extend.group_pos_caja" context="{'pos_session_id' : session_id}" icon="STOCK_PRINT"/>
+
+                    <button name="cancel_payment" states="paid,done,invoiced" string="Anular pagos" icon="gtk-cancel" groups="pos_extend.group_pos_caja" type="object"/>
+                    <button name="cancel_order" states="draft,paid,done,invoiced" string="Anular Ticket" icon="gtk-cancel" groups="point_of_sale.group_pos_user" type="object"/>
+                </xpath>
+
+                <!--<xpath expr="//button[@name='refund']" position="after"> -->
+                <xpath expr="//button[@name='refund']" position="replace">
+                    <button name="%(point_of_sale.action_pos_payment)d" string="Payment" class="oe_highlight" type="action" states="draft" context="{'pos_session_id' : session_id}" groups="pos_extend.group_pos_caja"/>
+                </xpath>
+
+                <field name="partner_id" position="replace">
+                    <field name="partner_id" on_change="onchange_partner_id(partner_id, context)" context="{'search_default_customer':1, 'show_address': 1}" options="{'always_reload': True,'limit': 10, 'create': false, 'create_edit': True}" attrs="{'readonly': [('state','!=','draft')]}"  filter_domain="[('ref','ilike',self)]"  domain="[('customer','=',1)]" required="1" />
+
+                </field>
+                <field name="session_id" position="after">
+                     <field name="es_factura" string="Facturada?" attrs="{'readonly': [('state','!=','draft')]}" />
+                </field>
+
+                <field name="pricelist_id" position="replace"/>
+                <field name="partner_id" position="after">
+                    <field name="almacendespacho_id" domain="[('bajo_pedido','=',1)]"  attrs="{'readonly': [('state','!=','draft')]}" />
+                    <field name="doc_number" string="RUC/DNI" on_change="onchange_ruc_dni(doc_number, context)"  attrs="{'readonly': [('state','!=','draft')]}" placeholder="Buscar cliente por RUC/DNI"/>
+                    <field name="pricelist_id" groups="product.group_sale_pricelist" domain="[('type','=','sale')]"/>
+                </field>
+
+                <field name="pricelist_id" position="before">
+                    <field name="fecha_expected"  attrs="{'readonly': [('state','!=','draft')]}"/>
+                </field>
+
+                <field name="fecha_expected" position="after">
+                    <field name="partner_shipping_id" context="{'default_type':'delivery' ,'show_address': 1}" options="{'always_reload': True,'limit': 10, 'create': false, 'create_edit': false}"  attrs="{'readonly': [('state','!=','draft')]}"/>
+                </field>
+
+                <field name="pos_reference" position="replace"/>
+                <field name="partner_shipping_id" position="after">
+                    <label string="."/>
+                    <button name="%(pos_extend.action_view_update_pos_order)d" string="Actualizar fecha entrega" type="action" class="oe_link" />
+                    <label for="pos_reference" string="Numero Ticket"/>
+                    <h3>                        
+                        <field name="pos_reference"  attrs="{'readonly': [('state','!=','draft')]}" class="oe_inline" placeholder="Generado automaticamente"/>
+                    </h3>
+                </field>
+                <field name="picking_id" position="replace">
+                    <field name="picking_id" string="Guia de Salida"/>
+                </field>
+                <field name="note" position="replace">
+                    <field name="note"/>
+                </field>
+
+                <field name="amount_tax" position="before" >
+                    <field name="amount_subtotal" />
+                    <field name="exonerado" />
+                </field>
+
+                <!-- PARA PEDIDDOS DE ALMACEN-->
+                <field name="product_id" position="replace">
+                    <field name="product_id" on_change="onchange_product_id(parent.pricelist_id,product_id,qty, parent.partner_id, parent.almacendespacho_id, parent.session_id)" options="{'limit': 10, 'create': false, 'create_edit': false}"/>
+                    <field name="descripcion"/>
+                </field>
+                <field name="qty" position="replace">
+                   <field name="qty" on_change="onchange_qty(product_id, discount, qty, price_unit, parent.almacendespacho_id, parent.session_id,context)"/>
+                </field>
+
+                <field name="price_unit" position="replace">
+                    <field name="price_unit" on_change="onchange_qty(product_id, discount, qty, price_unit, parent.almacendespacho_id, parent.session_id,context)"/>
+                </field>
+
+                <field name="discount" position="replace" >
+                    <field name="discount"  on_change="onchange_qty(product_id, discount, qty, price_unit, parent.almacendespacho_id, parent.session_id,context)"/>
+                </field>
+                <!-- FIN -->
+                <!-- REF. PAGO-->
+                <field name="journal_id" position='after'>
+                    <field name="ref_card"/>
+                </field>
+
+		<!-- para evitar agregar mas items luego de haber anulado el pago del ticket-->
+		<!--
+                <field name="lines" position='attributes'>
+                    <attribute name='readonly'>[('picking_id','!=',False)]</attribute>
+                </field>
+		-->
+                <notebook position="inside">
+                    <page string="Tipo de Venta">
+                        <separator string="Tipo de Venta"/>
+                        <group>
+                            <group>                                
+                                <field name="forma_pago"/>                                                            
+                                <field name='tipo_pago'/>
+                            </group>
+                        </group>
+                   </page>
+                   <page string="Datos de envio">
+                        <separator string="Datos de envio"/>
+                        <group>
+                            <group>
+                                <field name='lugar'/>
+                                <field name="forma_entrega"/>                                                            
+                            </group>
+                            <group>
+                                <field name="incluye_flete"/>
+                                <field name="incluye_embalaje"/>
+                            </group>
+                        </group>
+                   </page>
+                   <page string="Datos de agencia">
+                        <separator string="Datos de agencia"/>
+                        <group>
+                            <group>
+                                <field name="agencia"/>                           
+                                <field name="contacto"/> 
+                                <field name="dni_contacto"/>
+                            </group>
+                            <group>
+                                <field name="pago_destino" />
+                                <field name="recojo_agencia"/>
+                                <field name="delivery_agencia" string="Delivery a Domicilio"/>
+                            </group>
+                        </group>
+                   </page>
+                </notebook>   
+	        </field>
+    	</record>
+
+        <record model="ir.ui.view" id="view_pos_extend_tree_inherited">
+            <field name="name">pos.order.extend.tree.inherited</field>
+            <field name="model">pos.order</field>
+            <field name="inherit_id" ref="point_of_sale.view_pos_order_tree"/>
+            <field name="arch" type="xml">
+                <field name="invoice_id" position="replace"/> 
+                <field name="pos_reference" position="replace">
+                    <field name="pos_reference" string="Numero Ticket"/>
+                </field>
+                <field name="name" position="replace">
+                    <field name="name" string="Pedido Venta"/>
+                </field>
+            </field>
+        </record>
+
+        <!--
+        <menuitem parent="point_of_sale.menu_point_of_sale" action="sale.action_orders" id="menu_sales_normal" sequence="10" name="Ventas normales"/> -->
+
+<!-- Añade el campo bajo_pedido a una ubicacion-->
+        <record model="ir.ui.view" id="view_stock_location_bajopedido_form_inherited">
+            <field name="name">sale.shop.res_users.form</field>
+            <field name="model">stock.location</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="stock.view_location_form"/>
+            <field name="arch" type="xml">
+                <field name="scrap_location" position="before">
+                     <field name="bajo_pedido"/>
+                </field>
+            </field>
+        </record>
+
+
+<!-- Añade el campo sequencetpv al formulario tienda-->
+        <record model="ir.ui.view" id="view_sale_shop_sequencepos_form">
+            <field name="name">sale.shop.sequencepos.form</field>
+            <field name="model">sale.shop</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="sale_multishop.view_sale_shop_res_users_form"/>
+            <field name="arch" type="xml">
+                <field name="sequence_id" position="after">
+                     <field name="sequencepos_id"/>
+                     <field name="shop_parent_id"/>
+                     <field name="shop_email"/>
+                </field>
+            </field>
+        </record>
+
+<!-- Añade el campo ref_card al formulario account.bank.statement-->
+        <record model="ir.ui.view" id="view_account_bank_statement_ref_card_inherited_form">
+            <field name="name">account.bank.statement_ref_card.inherited.form</field>
+            <field name="model">account.bank.statement</field>
+            <field name="inherit_id" ref="account.view_bank_statement_form2"/>
+            <field name="arch" type="xml">
+                <field name="ref" position='after'>
+                    <field name="ref_card"/>                
+                </field>
+            </field>
+        </record>
+
+
+<!-- Añade el campo forma_pago al formulario account.journal-->
+        <record model="ir.ui.view" id="view_account_bank_statement_inherited_form">
+            <field name="name">account.journal.forma.pago.inherited</field>
+            <field name="model">account.journal</field>
+            <field name="inherit_id" ref="account.view_account_journal_form"/>
+            <field name="arch" type="xml">
+                <field name="type" position='after'>
+                    <field name="forma_pago"/>                
+                </field>
+            </field>
+        </record>
+<!-- Para poder poder buscar por TB o TF o por Cliente-->
+       <record model="ir.ui.view" id="view_pos_order_ticket_filter" >
+            <field name="name">pos.order.list.select.ticket</field>
+            <field name="model">pos.order</field>
+            <field name="inherit_id" ref="point_of_sale.view_pos_order_filter"/>
+            <field name="arch" type="xml">
+                <field name='name' position="replace">
+                    <field name="name" filter_domain="['|',('name','ilike',self),('pos_reference','ilike',self)]"/>
+                </field>
+                <field name='date_order' position='before'>
+                    <field name="partner_id"/>
+                </field>
+                <xpath expr="//filter[@string='Order Date']" position="after">
+                   <!-- <filter string='Ventas hoy' domain="[('date_order', '&gt;=', time.strftime('%%Y-%%m-%%d 00:00:00')),('date_order', '&lt;=', time.strftime('%%Y-%%m-%%d 23:59:59'))]" /> -->
+		<filter string='Ventas hoy' domain="[('date_order', '&gt;=', time.strftime('%%Y-%%m-%%d 10:00:00'))]" />
+                </xpath>
+
+            </field>
+        </record>
+    <!--Añadiendo total de pago a las sessiones -->    
+        <record model="ir.ui.view" id="view_pos_session_total_pago_inherited_form">
+            <field name="name">pos.session.total.pago.inherited</field>
+            <field name="model">pos.session</field>
+            <field name="inherit_id" ref="point_of_sale.view_pos_session_form"/>
+            <field name="arch" type="xml">
+                <field name="statement_ids" position='after'>
+                    <group>
+                        <field name="total_caja"/>
+                    </group>               
+                </field>
+            </field>
+        </record>
+        <!-- Añadiendo camo pos_order_id en guia de salida -->
+        <record id="view_stock_pickin_out_posorder_form" model="ir.ui.view">
+            <field name="name">stock.picking.out.posorder.form</field>
+            <field name="model">stock.picking.out</field>
+            <field name="inherit_id" ref="stock.view_picking_out_form"/>
+            <field name="arch" type="xml">
+                <field name="date_done" position="after">
+                    <field name="pos_order_id" options="{'always_reload': True,'limit': 5, 'create': false, 'create_edit': false}" />                       
+                </field>
+            </field>
+        </record>
+  </data>
+</openerp>

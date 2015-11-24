@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data> 
+
+    <!-- Añade el campo sequence de composicion a la ubicacion-->
+    <record model="ir.ui.view" id="view_location_sequence_composition_form">
+          <field name="name">location.sequence.composition.form.inherit</field>
+          <field name="model">stock.location</field>
+          <field name="type">form</field>
+          <field name="inherit_id" ref="location_sequences.view_stock_location_form_inherited"/>
+          <field name="arch" type="xml">
+              <field name="sequence_out_id" position="after">                    
+                     <field name="sequence_composition_id" />                    
+              </field>
+          </field>
+      </record>
+        
+<!-- lista de componentes de un producto compuesto-->
+
+        <record model="ir.ui.view" id="view_product_composition_tree">
+            <field name="name">product.composition.tree</field>
+            <field name="model">product.composition</field>
+            <field name="arch" type="xml">
+                <tree string="Listar de registro">
+                   <field name="name"/>
+                   <field name="product_id"/>
+                   <field name="quantity"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_product_composition_form">
+            <field name="name">product.composition.form</field>
+            <field name="model">product.composition</field>
+            <field name="arch" type="xml">
+            <form string="Nuevo registro" version="7.0">
+                <sheet>
+                    <group>
+                        <group>
+                          <field name="product_id" on_change="onchange_product_id(product_id, name, context)"/>
+                          <field name="quantity"/>
+                        </group>
+                        <group>
+                          <field name="name"/>
+                          <field name="active"/>
+                        </group>
+                    </group> 
+                    <notebook>
+                        <page  string="Componentes">
+                            <field name="composition_line_ids">
+                                <tree string="Components" editable="bottom">
+                                    <field name="product_id"/>
+                                    <field name="quantity"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>      
+            </form>
+            </field> 
+          </record>
+
+        <record model="ir.actions.act_window" id="action_product_composition_tree">
+          <field name="name">Composicion de productos</field>
+          <field name="res_model">product.composition</field>
+          <field name="view_type">form</field>
+          <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem name="Composicion de productos" parent="stock.menu_stock_product" id="menu_product_composition"/>
+
+        <menuitem parent="menu_product_composition" action="action_product_composition_tree" id="menu_product_component" sequence="13" name="Lista de Componentes" groups='group_product_composition' />
+
+        
+<!-- Fin lista de componentes-->
+
+<!-- Componsicion y descomposicion de productos-->
+
+        <record model="ir.ui.view" id="view_product_make_tree">
+            <field name="name">product.make.tree</field>
+            <field name="model">product.make</field>
+            <field name="arch" type="xml">
+                <tree string="Listar de registro" colors="blue:state=='draft';gray:state=='cancel'" >
+                   <field name="name"/>
+                   <field name="composition_id"/>
+                   <field name="concepto"/>
+                   <field name="quantity"/>
+                   <field name="date"/>
+                   <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_product_make_form">
+            <field name="name">product.make.form</field>
+            <field name="model">product.make</field>
+            <field name="arch" type="xml">
+            <form string="Nuevo registro" version="7.0">
+                <header>                
+                  <button name="button_componer" string="Componer" type="object" states="draft" class="oe_highlight"/>              
+                  <button name="button_cancel" string="Cancelar" type="object"  states="draft" /> 
+                  <button name="button_cancel" string="Cancelar" type="object" states="done"/>  
+                  <field name="state"  widget="statusbar" statusbar_visible="draft,done,cancel"
+                  statusbar_colors="{&quot;waiting_date&quot;:&quot;blue&quot;}"/>
+                </header> 
+                <sheet>
+                    <div class="oe_title">
+                        <h1> <field name="name" class="oe_inline" readonly='1'/> </h1>
+                    </div>
+                    <group col="12" >
+                        <group colspan="8">
+                            <field name="composition_id"/>
+                            <field name="quantity" />
+                            <field name="concepto"  /> 
+                          <!--  <field name="location_id" domain="[('usage','=','composition'),('chained_location_type','=','none')]" /> -->
+                            <field name="location_dest_id" domain="[('usage','=','internal'),('chained_location_type','=','none')]" help="Ubicacion donde se realizara la composicion"/>
+                        </group>
+                        <group colspan="4"> 
+                          <field name="date"/>
+                          <field name='fecha_composicion'/>
+                        </group>
+                    </group> 
+                    <notebook>
+                        <page  string="Productos consumidos y producidos">
+                            <field name="make_line_ids" readonly="0">
+                                <tree string="Components" editable="bottom">
+                                    <field name="product_id"/>
+                                    <field name="product_qty"/>
+                                    <field name="concepto"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page  string="Movimientos">
+                            <field name="move_lines_ids" readonly="0">
+                              <field name="product_id"/>
+                              <field name="product_qty"/>
+                              <field name="location_dest_id"/>
+                            </field>                          
+                        </page>
+                    </notebook>
+                </sheet>      
+            </form>
+            </field> 
+          </record>
+
+        <record model="ir.actions.act_window" id="action_product_make_tree">
+          <field name="name">Composicion de productos</field>
+          <field name="res_model">product.make</field>
+          <field name="view_type">form</field>
+          <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem parent="menu_product_composition" action="action_product_make_tree" id="menu_product_componer_descomponer" sequence="10" name="Componer y descomponer"/>
+
+<!-- Fin de componsicion y descomposicion de productos-->
+
+<!--     
+      <record model="ir.ui.view" id="view_stock_picking_out_guia_form_inherited">
+          <field name="name">stock.picking.out.guia.form.inherit</field>
+          <field name="model">stock.picking.out</field>
+          <field name="type">form</field>
+          <field name="inherit_id" ref="stock.view_picking_out_form"/>
+          <field name="arch" type="xml">
+            <field name="stock_journal_id" position="replace">
+              <field name="stock_journal_id" widget="selection" string="Guia Remision"/>
+            </field>
+          </field>
+      </record>
+-->
+
+        <!-- Añadiendo icono de visualizacion de compuesto en stock_move -->
+        <record model="ir.ui.view" id="view_stock_move_compuesto_inherit_tree">
+            <field name="name">view.stock.move.compuesto.inherit.tree</field>
+            <field name="model">stock.move</field>
+            <field name="inherit_id" ref="stock.view_move_picking_tree"/>
+            <field name="arch" type="xml">
+              <field name='location_id' position="after">
+                  <field name='compuesto'/>
+                  <button name="%(product_composition.action_producto_composition_move)d"  string="Ver composicion" type="action" icon="kanban-apply" attrs="{'invisible': [('compuesto', '=', False)]}" />
+              </field>
+            </field>
+        </record>
+      
+        <!-- Añadiendo icono de visualizacion de compuesto en product_product -->
+        <record model="ir.ui.view" id="product_form_view_composition_button">
+            <field name="name">product.product.composition</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@name='buttons']" position="inside">
+                    <button string="Lista composicion" name="%(product_composition.action_producto_composition_move)d" type="action"/>
+                </xpath>
+            </field>
+        </record>
+
+        <report
+            auto="False"
+            id="stock_picking_out_composition"
+            model="stock.picking.out"
+            name="stock.picking.composition"
+            rml="product_composition/report/picking_comp.rml"
+            string="Picking composicion"
+            usage="default"
+        /> 
+
+      <!-- Imprime la orden de venta para almacen-->
+      <report
+            auto="False"
+            id="sale_order_print_almacen"
+            model="sale.order"
+            name="sale.order.print.almacen"
+            rml="product_composition/report/sale_order_print_almacen.rml"
+            string="Impresion para Almacen"
+            usage="default"
+        />
+
+      <!-- Imprime pos orden de venta para almacen-->
+      <report
+            auto="False"
+            id="pos_order_print_almacen"
+            model="pos.order"
+            name="pos.order.print.almacen"
+            rml="product_composition/report/pos_order_print_almacen.rml"
+            string="Impresion para Almacen"
+            usage="default"
+        /> 
+  </data>
+</openerp>

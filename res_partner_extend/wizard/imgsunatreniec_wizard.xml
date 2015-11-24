@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+
+
+
+        <record id="view_imagen_sunat_reniec" model="ir.ui.view">
+            <field name="name">Formulario de ingreo de codigo sunat reniec</field>
+            <field name="model">res.partner.imgsunatreniec.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Ingrese codigo reniec sunat" version="7.0">
+                    <group col="4" string="Seleccione un producto">
+                        <img src='https://cel.reniec.gob.pe/valreg/codigo.do'/>
+                        <newline/>
+                        <field name="imagenrucdni" />
+                    </group>
+                    <footer>
+                        <button name="send_codigo" type="object" string="Enviar" class="oe_highlight"/>
+                            or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+               </form>
+            </field>
+        </record>
+
+        <record id="action_view_img_sunat_reniec" model="ir.actions.act_window">
+            <field name="name">imagen sunat reniec</field>
+            <field name="type">ir.actions.act_window</field> 
+            <field name="res_model">res.partner.imgsunatreniec.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_imagen_sunat_reniec"/>
+            <field name="target">new</field>
+        </record>
+
+
+    </data>
+</openerp>

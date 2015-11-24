@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<openerp>
+	<data>
+    	<!-- para impresiones corporativo -->
+        <report
+            auto="False"
+            id="account_invoice_a4"
+            model="account.invoice"
+            name="account.invoice.a4"
+            rml="account_invoice_a4/report/invoice_a4.rml" 
+            string="Factura A4"
+            attachment=""
+            attachment_use="0"
+            multi="False"/>
+	</data>
+</openerp>
